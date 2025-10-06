@@ -1,12 +1,18 @@
 export class Player {
     #position = null;
+    id = null
+
+    constructor(position, id) {
+        this.#position = position
+        this.id = id
+    }
 
     get position() {
         return this.#position;
     }
 
     moveTo(x, y) {
-         if (typeof x !== 'number' || typeof y !== 'number') {
+        if (typeof x !== 'number' || typeof y !== 'number') {
             throw new Error('Coordinates must be numbers');
         }
         if (x < 0 || y < 0) {
