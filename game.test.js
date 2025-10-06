@@ -1,7 +1,8 @@
-import {Game} from "./game.js";
-import {GAME_STATUSES} from "./GAME_STATUSES.js";
-import {Google} from "./Google.js";
-import {Settings} from "./Settings.js";
+// game.test.js
+import { Game } from "./game.js";
+import { GAME_STATUSES } from "./GAME_STATUSES.js";
+import { Google } from "./Google.js";
+import { Settings } from "./Settings.js";
 
 describe('Game', () => {
     it('should have status pending after creating', () => {
@@ -9,26 +10,31 @@ describe('Game', () => {
         expect(game.status).toEqual(GAME_STATUSES.PENDING);
     });
 
-    it('should have status inProgress after start', () => {
+    it('should have status inProgress after start, and change grid', () => {
         const game = new Game();
         game.start();
         expect(game.status).toEqual(GAME_STATUSES.IN_PROGRESS);
+        expect(game.settings.gridSize).toEqual({ x: 4, y: 4 });
     });
 
-    it('grid size should be changed', () => {
-        const google = new Google();
-        const settings = google.settings;
+    it('google position should change after multiple jumps', () => {
+        const game = new Game();
+        game.start();
 
-        const initialX = settings.gridSize.x;
-        const initialY = settings.gridSize.y;
+        const google = game.google;
 
         google.jumpGoogle();
+        const firstPosition = { ...google.position };
 
-        const newX = settings.gridSize.x;
-        const newY = settings.gridSize.y;
+        let positionChanged = false;
+        for (let i = 0; i < 50; i++) {
+            google.jumpGoogle();
+            if (google.position.x !== firstPosition.x || google.position.y !== firstPosition.y) {
+                positionChanged = true;
+                break;
+            }
+        }
 
-        expect(newX !== initialX || newY !== initialY).toBe(true);
+        expect(positionChanged).toBe(true);
     });
-
-
-})
+});

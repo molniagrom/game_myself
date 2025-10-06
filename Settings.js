@@ -1,8 +1,8 @@
 export class Settings {
 
     #gridSize = {
-        x: 4,
-        y: 4,
+        x: null,
+        y: null,
     }
 
     get gridSize() {
